@@ -1,4 +1,5 @@
-import { useConnect, useAccount, useDisconnect } from "wagmi";
+import { useEffect } from "react";
+import { useConnect, useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 
 import "./App.css";
 
@@ -6,6 +7,13 @@ function App() {
   const { connect, connectors, error } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
+  const { chains, switchNetwork } = useSwitchNetwork();
+
+  useEffect(() => {
+    if (isConnected && switchNetwork) {
+      switchNetwork(chains[0].id);
+    }
+  }, [isConnected, switchNetwork]);
 
   return (
     <div className="App">
