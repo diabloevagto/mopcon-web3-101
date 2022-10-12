@@ -18,6 +18,8 @@ function SendTransaction() {
     },
   });
 
+  const { sendTransaction, data } = useSendTransaction(config);
+
   return (
     <>
       <form
@@ -28,6 +30,7 @@ function SendTransaction() {
         }}
         onSubmit={(e) => {
           e.preventDefault();
+          sendTransaction?.();
         }}
       >
         <label htmlFor="recipient">Recipient</label>
@@ -47,6 +50,7 @@ function SendTransaction() {
         <button disabled={!to || !amount || isError}>Send</button>
       </form>
 
+      {data && <p>{data.hash}</p>}
       {error && <p>{error.message}</p>}
     </>
   );
