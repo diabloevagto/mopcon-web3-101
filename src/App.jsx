@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useConnect, useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 
+import SendTransaction from "./SendTransaction";
+
 import "./App.css";
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
           <>
             <p>{address}</p>
             <button onClick={disconnect}>Disconnect</button>
+            <SendTransaction />
           </>
         ) : (
           connectors.map((connector) => (
