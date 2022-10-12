@@ -20,6 +20,10 @@ function SendTransaction() {
 
   const { sendTransaction, data } = useSendTransaction(config);
 
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
   return (
     <>
       <form
@@ -47,11 +51,30 @@ function SendTransaction() {
           placeholder="0.05"
           value={amount}
         />
-        <button disabled={!to || !amount || isError}>Send</button>
+        <button disabled={isLoading || !to || !amount || isError}>Send</button>
       </form>
 
-      {data && <p>{data.hash}</p>}
       {error && <p>{error.message}</p>}
+      {data && isLoading && (
+        <>
+          <p>{data.hash}</p>
+          <p>Loading...</p>
+        </>
+      )}
+
+      {isSuccess && (
+        <div>
+          Successfully sent {amount} ether to {to}
+          <div>
+            <a
+              target="_blank"
+              href={`https://goerli.etherscan.io/tx/${data?.hash}`}
+            >
+              Etherscan {data.hash}
+            </a>
+          </div>
+        </div>
+      )}
     </>
   );
 }
